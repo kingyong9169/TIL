@@ -3,7 +3,7 @@ layout: default
 title: ⚽️ TIL, 배운 것을 그때그때 기록하자
 nav_order: 1000
 has_children: false
-permalink: /TIL/
+permalink: //
 ---
 
 # ⚽️ TIL, 배운 것을 그때그때 기록하자
