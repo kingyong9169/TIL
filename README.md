@@ -65,3 +65,22 @@ bundle install
 jekyll serve
 ```
 명령어를 실행하여 <http://localhost:4000/admin/>에 접근하여 게시물을 작성하고 수정할 수 있습니다.
+
+## 자동 git commit, push
+
+`npm init`을 통해 먼저 `package.json`파일을 작성한 후 shell script 파일을 작성합니다.
+```
+"scripts": {
+    "commit": "commit/commit.sh"
+  },
+```
+위 코드를 `package.json`에 추가해주고 `npm run commit`명령어를 입력합니다.<br>
+아마도 `Permission denied` 라는 오류가 발생할테지만 터미널 창에 `chmod +x commit/commit.sh`를 입력하고 다시 `npm run commit`명령어를 입력하면 성공하는 모습을 볼 수 있습니다.
+
+## shell script 종료 상태 확인 방법
+```
+if [ $? -ne 1 ]; then
+    echo 'commit success😀'
+fi
+```
+코드를 shell script 파일 아래에 작성해줍니다.
