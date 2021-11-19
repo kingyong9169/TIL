@@ -2,14 +2,15 @@
 
 프로젝트를 진행하며 겪었던 경험(어떤 문제가 있었고 어떻게 해결했는지), 스터디, 코딩테스트 준비, FE 준비, 매일 공부하며 새로 알게 된 지식 등 배운 것을 구체적으로 기록하려고 합니다.
 
-- [블로그 페이지]()
+- [TIL 페이지](https://kingyong9169.github.io/TIL/)
 - [GitHub](https://github.com/kingyong9169)
 - [Velog](https://velog.io/@kingyong9169)
 - [코딩테스트 스터디](https://github.com/thdwlsgus0/algo_spot)
 
 ## just-the-docs, jekyll 세팅 방법
 
-just-the-docs 테마 사용법 전체에 대한 설명은 [just-the-docs](https://pmarsceill.github.io/just-the-docs/)에서 볼 수 있습니다. jekyll 방법을 원하시면 [jekyll](https://jekyllrb.com/docs/)을 참고하시면 됩니다.
+jekyll 세팅 [jekyll](https://jekyllrb.com/docs/)을 먼저 진행한 후에
+just-the-docs 테마 사용법 [just-the-docs](https://pmarsceill.github.io/just-the-docs/)을 통해 테마 적용을 해주세요.
 
 ## Navigation 카테고리 구성 방법
 

@@ -1,0 +1,18 @@
+{
+  "name": "til",
+  "version": "1.0.0",
+  "description": "TIL, 배운 것을 그때그때 기록하자",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "commit": "commit/commit.sh"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kingyong9169/TIL.git"
+  },
+  "license": "MIT",
+  "author": "Bruney <drdragon777@naver.com>"
+}
