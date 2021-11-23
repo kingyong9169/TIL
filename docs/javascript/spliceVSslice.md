@@ -4,7 +4,7 @@ title: splice VS slice
 parent: javascript
 nav_order: 2
 has_children: false
-permalink: /javascript/splice-VS-slice/
+permalink: /js/splice-VS-slice/
 ---
 
 # ⚔️ Array를 다루는 메소드 splice vs slice 비교

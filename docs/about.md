@@ -1,7 +1,7 @@
 ---
 layout: default
 title: About 브루니
-nav_order: 100
+nav_order: 1000
 has_children: false
 permalink: /about/
 ---

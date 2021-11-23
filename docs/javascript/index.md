@@ -3,7 +3,7 @@ layout: page
 title: javascript
 nav_order: 2
 has_children: true
-permalink: /javascript/
+permalink: /js/
 ---
 
 # javascript

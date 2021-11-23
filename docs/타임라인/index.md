@@ -1,7 +1,7 @@
 ---
 layout: default
 title: 타임라인
-nav_order: 3
+nav_order: 100
 has_children: true
 permalink: /timeline/
 ---
