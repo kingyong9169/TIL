@@ -40,13 +40,9 @@ export default axios.create({
   baseURL: "http://localhost:4123/",
   headers: {
     "Content-type": "application/json",
-    "x-access-token": JSON.parse(localStorage.getItem("x-access-token") || ""),
-    "x-refresh-token": JSON.parse(
-      localStorage.getItem("x-refresh-token") || "",
-    ),
+    "x-access-token": localStorage.getItem("x-access-token") || "",
+    "x-refresh-token": localStorage.getItem("x-refresh-token") || "",
   },
 });
 ```
 axios 모듈로 통신하는 부분에서는 별도의 헤더인 `x-access-token, x-refresh-token`을 지정하여 사용자가 로그인했다면 jwt가 헤더에 포함되어 api요청이 갈 것이고 아니라면 빈 문자열이 전달되어 액세스가 되지 않을 것이다.
-
-`JSON.parse()`메소드를 사용한 이유는 JavaScript에서 객체를 선언할 때 객체 리터럴보다 JSON.parse로 파싱하는 것이 더 빠르기 때문에 사용하였습니다. [참조 링크](https://wormwlrm.github.io/2019/12/04/Why-JSON-parse-is-faster-than-object-literal.html)
