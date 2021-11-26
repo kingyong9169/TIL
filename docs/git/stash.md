@@ -3,11 +3,11 @@ layout: default
 title: stash
 parent: Git
 nav_order: 1
-has_children: true
+has_children: false
 permalink: /git/stash
 ---
 
-# git stash란
+# git stash란 [참조 링크](https://gmlwjd9405.github.io/2018/05/18/git-stash.html)
 
 ## 들어가기
 자신이 어떤 작업을 하다가 다른 작업을 해야할 일이 생겨 잠시 브랜치를 변경해야 할 일이 있는 상황이다. 이때, 아직 완료하지 않은 일을 commit하기에는 난감한 상황이다. 이럴 때 사용한다.
@@ -21,6 +21,11 @@ permalink: /git/stash
 이 과정을 통해 working directory는 깨끗해진다.
 
 이제 새로운 작업을 위한 다른 브랜치로 변경할 수 있다.
+
+#### untracked file 숨기기 [참조 링크](https://linuxhint.com/stash-untracked-files-in-git/)
+1. `git stash -include-untracked`
+2. `git stash -u`
+3. `git add 후 git stash`
 
 ### 2. `git stash list`
 여러 번 stash를 했다면 위의 명령어를 통해 저장한 stash 목록을 확인할 수 있다.
