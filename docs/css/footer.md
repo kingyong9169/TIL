@@ -17,7 +17,7 @@ position: relative;
 min-height: 100vh;
 
 [형]
-padding-bottom: 100px;
+padding-bottom: 100px; // 포인트
 
 [footer]
 position: abolute;
