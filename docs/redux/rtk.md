@@ -1,14 +1,14 @@
 ---
 layout: default
-title: Redux Tool Kit과 Redux의 차이점 정리
+title: Redux Tool Kit 개념 총정리
 parent: Redux
 nav_order: 3
 has_children: false
 permalink: /redux/rtk
 ---
 
-# Redux Tool Kit과 Redux의 차이점 정리
-이 글은 [공식 문서](https://redux-toolkit.js.org/usage/usage-with-typescript)와 [블로그 1](https://blog.rhostem.com/posts/2020-03-04-redux-toolkits), [블로그 2](https://blog.woolta.com/categories/1/posts/204)에 있는 내용을 바탕으로 작성한 글입니다. 아직 공부량이 적어 부족한 점이 많으니 적극적으로 알려주시면 감사하겠습니다.
+# Redux Tool Kit 개념 총정리
+이 글은 [공식 문서](https://redux-toolkit.js.org/usage/usage-with-typescript)와 [블로그 1](https://blog.rhostem.com/posts/2020-03-04-redux-toolkits), [블로그 2](https://blog.woolta.com/categories/1/posts/204), [블로그 3](https://velog.io/@raejoonee/createAsyncThunk)에 있는 내용을 바탕으로 작성한 글입니다. 아직 공부량이 적어 부족한 점이 많으니 적극적으로 알려주시면 감사하겠습니다. 먼저, 예시로 사용되는 간단한 코드와 제가 직접 구현한 코드를 혼용하여 사용하는 것에 양해 부탁드립니다.
 
 ## RTK를 사용하는 이유
 redux를 사용할 때 actionType 정의, 액션 함수, 리듀서 함수를 생성합니다. 
@@ -69,6 +69,8 @@ export const store = configureStore({
 
 // store 스스로 루트상태 정의
 export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
+export const useAppDispatch = () => useDispatch<AppDispatch>();
 ```
 
 코드만 봤을 때도 직관적으로 RTK가 편하다는 느낌이 오시지 않나요? 
@@ -83,6 +85,10 @@ export type RootState = ReturnType<typeof store.getState>;
 
 이외의 다른 옵션은 [configureStore](https://redux-toolkit.js.org/api/configureStore)을 통해 확인해주시면 좋을 것 같습니다.
 
+만약 Dispatch 타입을 얻고 싶다면 store를 먼저 정의한 후 가능합니다. 디스패치 타입 이름이 남용되기 때문에 AppDispatch와 같이 서로 다른 이름으로 타입을 정의할 것을 공식 문서에서 권장하고 있습니다.
+
+또한, `useAppDispatch`같이 훅을 export한 다음 
+`const dispatch = useAppDispatch();`와 같이 `useDispatch`을 호출할 때마다 사용하는 것이 더 편리할 수도 있습니다. 더 자세한 내용은 [react-redux 공식 문서](https://react-redux.js.org/using-react-redux/usage-with-typescript#typing-the-usedispatch-hook)을 참고해주세요.
 
 ## createAction
 redux-action에서 사용하는 `creatAction`을 지원합니다. action 타입 문자열을 인자로 받고, 해당 타입을 사용하는 액션 생성자함수를 return 합니다.
@@ -145,6 +151,9 @@ FSA까지 봤을 때, 굳이 RTK를 써야하나? 라는 의문점이 생길 수
 
 switch문을 작성할 필요 없이(default 작성을 하지 않는다는 또 하나의 장점) reducer가 table lookup하여 action에 따른 적절한 reducer를 호출합니다.
 
+또 하나의 엄청난 장점이 있습니다.
+immer의 produce를 자체적으로 지원하기 때문에 따로 코드로 immutable 관리를 하지 않아도 되는 큰 장점이 있습니다. 따라서 전달되는 모든 케이스 리듀서 함수 내부에서 상태를 "변경"하는 것이 이미 안전합니다. 이는 마찬가지로 `createSlice`에서도 당연히 적용됩니다. 내부적으로 `createReducer`를 사용하기 때문입니다.
+
 ``` javascript
 const increment = createAction("counter/increment");
 const decrement = createAction("counter/decrement");
@@ -163,7 +172,7 @@ createReducer은 두 가지 파라미터를 전달 받습니다. 첫번째는 �
 
 
 ## createSlice
-action과 reducer를 한 번에 작성할 수 있습니다.(createAction + createReducer) RTK를 사용하는 큰 이유 중 하나라고 생각하며 RTK의 꽃이라고 생각합니다.
+action과 reducer를 한 번에 작성할 수 있습니다.(createAction + createReducer) RTK를 사용하는 큰 이유 중 하나라고 생각하며 RTK의 꽃이라고 생각합니다. 위에서도 언급했지만 `createSlice`에서도 당연히 `immer`가 자동으로 적용됩니다. 내부적으로 `createReducer`를 사용하기 때문입니다. 또한, 리듀서 맵의 값에 해당하는 함수를 슬라이스 외부에서 정의해도 마찬가지로 적용됩니다. immer를 사용할 때 몇 가지 규칙이 존재하므로 반드시 [공식 문서](https://redux-toolkit.js.org/usage/immer-reducers#immutable-updates-with-immer)를 참조하시기 바랍니다.
 
 ``` typescript
 const counterSlice = createSlice({
@@ -197,12 +206,12 @@ const counterSlice = createSlice({
   }
 });
 ```
-- name : 해당 모듈의 이름을 작성합니다.
-- initialState : 해당 모듈의 초기값을 세팅합니다.
-- reducers : 리듀서를 작성합니다. 이때 해당 리듀서의 키값으로 액션함수가 자동으로 생성됩니다.
-- extraReducers : 액션함수가 자동으로 생성되지 않는 별도의 액션함수가 존재하는 리듀서를 정의합니다. (선택 옵션이며 thunk에 대한 reducer를 작성하는 공간입니다.)
+- `name` : 해당 모듈의 이름을 작성합니다.
+- `initialState` : 해당 모듈의 초기값을 세팅합니다.
+- `reducers` : 리듀서를 작성합니다. 이때 해당 리듀서의 키값으로 액션함수가 자동으로 생성됩니다.
+- `extraReducers` : 액션함수가 자동으로 생성되지 않는 별도의 액션함수가 존재하는 리듀서를 정의합니다. (선택 옵션이며 thunk에 대한 reducer를 작성하는 공간입니다.)
 
-위 코드를 보셨다시피 액션 타입의 prefix만 정의하고 리듀서 맵의 키를 정의하면 자동으로 `counter/INCREMENT`라는 액션 타입이 자동으로 만들어 집니다.
+위 코드를 보셨다시피 액션 타입의 prefix만 정의하고 리듀서 맵의 키를 정의하면 자동으로 `counter/increment`라는 액션 타입이 자동으로 만들어 집니다.
 
 `createSlice`를 사용하면 가독성이 떨어질 수 있지만 ducks패턴을 지키면서 코드의 양을 줄일 수 있다는 장점이 존재합니다.
 
@@ -211,8 +220,28 @@ const counterSlice = createSlice({
 ### extraReducers
 `extraReducers`는 액션을 따로 정의한 함수에 대한 리듀서를 정의하는 역할을 담당합니다. 따라서 정의한 key값은 액션이 자동으로 생성되지 않습니다. thunk의 경우 액션함수를 따로 만들어 줘야 합니다.
 
+
+### 리턴 값
+``` typescript
+{
+    name : string,
+    reducer : ReducerFunction,
+    actions : Record<string, ActionCreator>,
+    caseReducers: Record<string, CaseReducer>
+}
+```
+위 createSlice의 `reducers`속성에 정의된 리듀서 함수들은 `actions` 필드에 포함되어 리턴됩니다.
+
+`const { increment, decrement } = counterSlice.actions;`
+
+리듀서 함수인데 왜 actions 필드에 포함이 될까요? 그 이유는 reducers에 정의된 함수는 `name`에서 정의한 prefix와 동일한 함수 이름을 합쳐 `createAction`를 통해 액션함수가 자동으로 생성되기 때문입니다.
+
+`reducer` 필드는 `"슬라이스 리듀서"`로써 위 `configureStore`의 `notice: noticeSlice.reducer,`처럼 사용됩니다. 위의 `actions`를 통합하여 하나의 리듀서로 반환한다고 생각하시면 될 것 같습니다.
+
 ## createAsyncThunk
-redux에서 비동기 처리를 할 때 thunk, saga 등 미들웨어를 사용하여 한 개의 비동기 액션에 대해 pending(비동기 호출 전), fulfilled(비동기 호출 성공), rejectd(비동기 호출 실패)의 상태를 생성하여 처리하는 경우가 많았습니다. 하지만 이 API를 사용하여 더욱 편리하게 비동기 코드를 작성할 수 있습니다. 단, thunk만 지원합니다.
+redux에서 비동기 처리를 할 때 thunk, saga 등 미들웨어를 사용하여 한 개의 비동기 액션에 대해 pending(비동기 호출 전), fulfilled(비동기 호출 성공), rejected(비동기 호출 실패)의 상태를 생성하여 처리하는 경우가 많았습니다. 하지만 이 API를 사용하여 더욱 편리하게 비동기 코드를 작성할 수 있습니다. 단, thunk만 지원합니다.
+
+또 하나의 장점을 꼽자면 redux-saga에서만 사용할 수 있던 기능(이미 호출한 API 요청 취소하기 등)까지 사용할 수 있습니다.
 
 ## typescript
 RTK는 ts를 지원해줍니다. 타입을 사용하면 액션을 호출하고 상태를 가져올 때 버그 발생의 가능성을 줄여줍니다.
@@ -237,13 +266,13 @@ const todosSlice = createSlice({
 
 ``` typescript
 const todosSlice = createSlice({
-	reducers: {
-        removeTodo: (state, action: PayloadAction<{ id: number }>) => {
-            // ...
-        },
-	}
-	// ... 
-})
+  reducers: {
+    removeTodo: (state, action: PayloadAction<{ id: number }>) => {
+      // ...
+    },
+  },
+  // ... 
+});
 ```
 
 슬라이스의 리듀서에서는 action의 payload에 어떤 데이터 타입으로 들어와야 하는지 지정할 수 있으며 `PayloadAction`을 사용하면 됩니다.
@@ -251,7 +280,7 @@ const todosSlice = createSlice({
 ``` typescript
 const getScraper = createAsyncThunk(
   `${name}/getScraper`, // 액션 이름을 정의합니다.
-  async (title: string, thunkAPI) => {
+  async (title: string, thunkAPI) => { // payloadCreator 콜백
     try {
       const response = await http.get(title);
       return response.data;
@@ -264,6 +293,27 @@ const getScraper = createAsyncThunk(
 ```
 
 먼저, 첫 번째 파라미터로 액션 이름을 정의해줍니다. pending, fulfilled, rejected 상태에 대한 action은 자동으로 생성됩니다.
+```
+noticeScraper/getScraper/pending
+noticeScraper/getScraper/fulfilled
+noticeScraper/getScraper/rejected
+```
+이 자동으로 생성됩니다.
+
+두 번째 파라미터로 payloadCreator 콜백을 정의합니다. 비동기 로직의 결과를 포함하고 있는 프로미스를 반환하는 비동기 함수입니다.
+
+thunk의 동작 순서는 다음과 같습니다.
+
+먼저 `pending`액션을 디스패치합니다.
+- 프로미스가 `fulfilled` 상태라면, `action.payload`를 `fulfilled` 액션에 담아 디스패치하여 상태를 업데이트합니다.
+- 프로미스가 `rejected` 상태라면, `rejected` 액션을 디스패치하지만 `rejectedValue(value)`함수의 반환값에 따라 액션에 어떤 값이 넘어올 것인지 결정됩니다.
+  - `rejectedValue`가 값을 반환하면, `action.payload`를 `rejected` 액션에 담습니다.
+  - 만약에 없거나 값을 반환하지 않는다면, `action.error` 값처럼 오류를 `rejected` 액션에 담습니다.
+디스패치된 액션이 어떤 액션인지에 상관없이, 항상 최종적으로 디스패치된 액션을 담고 있는 `이행된 프로미스를 반환`합니다.
+
+그 이유는 다음과 같습니다.
+1. RTK는 처리된 오류가 그렇지 않은 경우보다 많다고 생각합니다.
+2. 디스패치 결과를 사용하지 않는 경우에도 프로미스가 거부되는 상황을 방지하고자 합니다.
 
 ``` typescript
 extraReducers: { // 액션을 따로 정의한 함수에 대한 리듀서를 정의 ex) thunk함수
