@@ -238,11 +238,6 @@ const counterSlice = createSlice({
 
 `reducer` 필드는 `"슬라이스 리듀서"`로써 위 `configureStore`의 `notice: noticeSlice.reducer,`처럼 사용됩니다. 위의 `actions`를 통합하여 하나의 리듀서로 반환한다고 생각하시면 될 것 같습니다.
 
-## createAsyncThunk
-redux에서 비동기 처리를 할 때 thunk, saga 등 미들웨어를 사용하여 한 개의 비동기 액션에 대해 pending(비동기 호출 전), fulfilled(비동기 호출 성공), rejected(비동기 호출 실패)의 상태를 생성하여 처리하는 경우가 많았습니다. 하지만 이 API를 사용하여 더욱 편리하게 비동기 코드를 작성할 수 있습니다. 단, thunk만 지원합니다.
-
-또 하나의 장점을 꼽자면 redux-saga에서만 사용할 수 있던 기능(이미 호출한 API 요청 취소하기 등)까지 사용할 수 있습니다.
-
 ## typescript
 RTK는 ts를 지원해줍니다. 타입을 사용하면 액션을 호출하고 상태를 가져올 때 버그 발생의 가능성을 줄여줍니다.
 
@@ -276,6 +271,11 @@ const todosSlice = createSlice({
 ```
 
 슬라이스의 리듀서에서는 action의 payload에 어떤 데이터 타입으로 들어와야 하는지 지정할 수 있으며 `PayloadAction`을 사용하면 됩니다.
+
+## createAsyncThunk
+redux에서 비동기 처리를 할 때 thunk, saga 등 미들웨어를 사용하여 한 개의 비동기 액션에 대해 pending(비동기 호출 전), fulfilled(비동기 호출 성공), rejected(비동기 호출 실패)의 상태를 생성하여 처리하는 경우가 많았습니다. 하지만 이 API를 사용하여 더욱 편리하게 비동기 코드를 작성할 수 있습니다. 단, thunk만 지원합니다.
+
+또 하나의 장점을 꼽자면 redux-saga에서만 사용할 수 있던 기능(이미 호출한 API 요청 취소하기 등)까지 사용할 수 있습니다.
 
 ``` typescript
 const getScraper = createAsyncThunk(
@@ -346,3 +346,5 @@ extraReducers: { // 액션을 따로 정의한 함수에 대한 리듀서를 정
 ```
 
 위 코드에서 보시는 바와 같이 `extraReducers` 안에서 리듀서 맵의 키 값은 액션의 type이 되며 각 `action type`에 맞는 함수가 값에 맵핑됩니다.
+
+### 호출했던 API 요청 취소하기, reselector에 관한 내용은 추후에 정리할 예정입니다.
