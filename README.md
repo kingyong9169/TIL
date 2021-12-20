@@ -84,3 +84,8 @@ if [ $? -ne 1 ]; then
 fi
 ```
 코드를 shell script 파일 아래에 작성해줍니다. [참고 문서](https://stackoverflow.com/questions/26675681/how-to-check-the-exit-status-using-an-if-statement)
+
+## 오류 로그
+로컬에서 `bundle exec jekyll serve`를 했을 때, 정상적으로 나타났지만 `gh-pages`에서는 아래 그림과 같은 빌드 오류가 나타났습니다. "지금까지 잘 되다가 왜 갑자기 오류지?" 라는 생각이었지만 공식 문서에서는 언급하지 않았던 `theme: "just-the-docs"`를 사용하고 있었다는 사실을 깨닫고 지운 뒤 푸쉬하여 해결하였습니다.
+
+<img width="515" alt="스크린샷 2021-12-21 오전 1 53 42" src="https://user-images.githubusercontent.com/62797441/146803465-fbd96d58-06a2-49b2-a7bd-ec5124872bf8.png">
