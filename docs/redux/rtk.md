@@ -307,7 +307,7 @@ const getScraper = createAsyncThunk(
       const response = await http.get(title);
       return response.data;
     } catch (err) {
-      return thunkAPI.rejectWithValue(err);
+      return thunkAPI.rejectWithValue(err.response.data);
     }
     // 리턴 타입은 Promise
   },
