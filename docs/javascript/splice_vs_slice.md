@@ -1,6 +1,6 @@
 ---
 layout: page
-title: splice VS slice
+title: splice vs slice
 parent: javascript
 nav_order: 2
 has_children: false

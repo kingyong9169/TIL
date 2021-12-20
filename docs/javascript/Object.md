@@ -10,7 +10,3 @@ permalink: /js/Object/
 # Object 함수
 
 Object.keys(), assign(), values()
-
-...스프레드 연산자
-
-얕은 복사, 깊은 복사
