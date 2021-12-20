@@ -1,4 +1,4 @@
 title: ⚽️ TIL, 배운 것을 그때그때 기록하자
-remote_theme: pmarsceill/just-the-docs
+remote_theme: "pmarsceill/just-the-docs"
 theme: "just-the-docs"
 search_enabled: true
