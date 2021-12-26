@@ -45,4 +45,4 @@ SPA는 초기 요청 시 서버에서 첫 페이지를 처리하고 이후의 �
   - 그 이유는 js가 로딩이 되기 전에 DOM은 비어있으므로 즉, js가 실행될때 까지 페이지가 비어 있어서 로딩 대기 중의 짧은 시간동안 빈페이지가 화면에 띄워져 있기 때문입니다.
 
 이벤트 리스너와 콜백
-history api의 location, state, match 등
+location, state, match 등
