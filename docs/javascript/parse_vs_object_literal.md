@@ -2,7 +2,7 @@
 layout: page
 title: JSON.parse()와 객체 리터럴의 성능 비교
 parent: javascript
-nav_order: 3
+nav_order: 4
 has_children: false
 permalink: /js/parse_vs_object_literal/
 ---

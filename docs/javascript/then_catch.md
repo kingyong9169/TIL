@@ -2,7 +2,7 @@
 layout: page
 title: then, catch에 대해
 parent: javascript
-nav_order: 8
+nav_order: 7
 has_children: false
 permalink: /js/then_catch/
 ---

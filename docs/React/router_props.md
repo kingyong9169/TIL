@@ -102,7 +102,30 @@ location 객체에는 현재 페이지의 정보를 가지고 있습니다.
 
 - pathname : `string` 현재 페이지의 경로명
 - search : `string` 현재 페이지의 query string
+`React.useMemo(() => new URLSearchParams(search), [ search ]);`
 - hash : `string` 현재 페이지의 hash
+
+url 쿼리를 사용하기 위해선 부가적인 라이브러리 `query-string`가 필요합니다.
+
+``` js
+import React from "react";
+import queryString from "query-string";
+
+function Login({ match, location }) {
+  const params = match.params.id ? match.params.id : "익명";
+  console.log("match", match);
+  console.log("location", location);
+  const query = queryString.parse(location.search);
+  console.log(query);
+  return (
+    <>
+      <div>{params} login page</div>
+    </>
+  );
+}
+
+export default Login;
+```
 
 ## <Route>로 감싸지지 않은 컴포넌트에서 history, location, match 사용하기
 종종 <Route>로 url 맵핑이 되지 않은 컴포넌트에서 `{ history, location, match }` 를 사용해야 할 때가 있습니다. 이럴 경우, 두 가지 방법을 이용해 세 객체를 사용할 수 있습니다.

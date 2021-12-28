@@ -2,12 +2,41 @@
 layout: page
 title: Object 함수
 parent: javascript
-nav_order: 4
+nav_order: 8
 has_children: false
 permalink: /js/Object/
 ---
 
 # Object 함수
+객체의 키에는 **문자열**, 값엔 모든 자료형이 허용됩니다.
+
+``` js
+const user = {
+  "name": "John",
+  "age": 30
+};
+
+console.log(user.name === user["name"]) // true;
+
+const user = {
+  name: "John",
+  age: 30
+};
+
+console.log(user.name === user["name"]) // true
+```
+
+만약 속성을 숫자로 바꾼다면?
+``` js
+let user = {
+  0: "John", // 숫자로 속성을 선언
+  age: 30
+};
+
+console.log(user["0"]) // John
+console.log(user[0]) // John
+console.log(user.0) // error, 객체에는 숫자 속성이 올 수 없기 때문입니다.
+```
 
 ## Object.entries()
 - Parameters: 객체 자체의 열거 가능한 문자열 키를 가진 속성 `[key, value]` 쌍이 반환되는 객체입니다.
