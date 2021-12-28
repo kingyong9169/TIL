@@ -3,7 +3,7 @@ layout: default
 title: Router props
 parent: React
 has-children: false
-nav_order: 1
+nav_order: 3
 permalink: /react/router_props/
 ---
 
