@@ -16,10 +16,6 @@ permalink: /react/hooks/
 ## useState
 
 ``` js 
-
-```
-
-``` js 
 const [state, setState] = useState(initialState);
 ```
 - 상태 유지 값과 그 값을 갱신하는 함수를 반환합니다.
@@ -28,9 +24,7 @@ const [state, setState] = useState(initialState);
 - 다음 리렌더링 시에 `useState`를 통해 반환받은 첫 번째 값은 항상 갱신된 최신 state가 됩니다.
 
 ⚠️ 주의사항
-```
 React는 `setState` 함수 동일성이 안정적이고 리렌더링 시에도 변경되지 않을 것이라는 것을 보장합니다. 이것이 `useEffect`나 `useCallback` 의존성 목록에 이 함수를 포함하지 않아도 무방한 이유입니다.
-```
 
 ### 함수적 갱신
 업데이트하고 싶은 값을 직접 명시할 수도 있지만 아래와 같이 함수의 형태로 명시할 수 있습니다.
