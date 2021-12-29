@@ -1,18 +1,28 @@
 ---
 layout: default
-title: React hooks 종류
+title: React hooks 총정리
 parent: React
 has-children: false
 nav_order: 4
 permalink: /react/hooks/
 ---
+# React hooks 총정리
 
-# React hooks 종류
-훅을 사용할 때는 다음 규칙을 지켜야 합니다.
-- 하나의 컴포넌트에서 훅을 호출하는 순서는 항상 같아야 합니다.
-- 훅은 함수형 컴포넌트 또는 커스텀 훅 안에서만 호출되어야 합니다.(클래스형 컴포넌트, 일반 함수에서 사용 X)
+## Hook 사용 규칙
+훅을 사용할 때는 다음 규칙을 지켜야 합니다. [공식 문서](https://ko.reactjs.org/docs/hooks-rules.html#explanation)
+### 최상위에서만 Hook을 호출해야 합니다.
+반복문, 조건문 혹은 중첩된 함수 내에서 Hook을 호출하면 안됩니다.❌
+**만약 조건부로 effect를 실행하고 싶다면, Hook 내부에 넣으면 됩니다.**
+
+컴포넌트가 렌더링 될 때마다 항상 동일한 순서로 Hook이 호출되는 것이 보장됩니다. React는 훅이 여러 번 호출되는 중에도 훅의 상태를 올바르게 유지할 수 있도록 해줍니다.
+예를 들어, 어떻게 특정 state가 어떤 useState호출에 해당하는지 알 수 있을까요?
+
+**React가 Hook이 호출되는 순서에 의존하기 때문입니다. 모든 렌더링에서 hook의 호출 순서는 같기 때문에 올바르게 동작할 수 있습니다.**
+
+### 함수형 컴포넌트 또는 커스텀 훅 안에서만 호출되어야 합니다.(클래스형 컴포넌트, 일반 함수에서 사용 X)
 
 이 규칙을 지켜야 리액트가 각 훅의 상태를 기억할 수 있습니다.
+
 ## useState
 
 ``` js 
@@ -58,7 +68,7 @@ const [state, setState] = useState(() => {
 ### state 갱신의 취소
 State Hook을 현재의 state와 `동일한 값`으로 갱신하는 경우 React는 자식을 렌더링 한다거나 무엇을 실행하는 것을 회피하고 그 처리를 종료합니다. (React는 [Object.is](https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Object/is#Description) 비교 알고리즘(==, ===와는 다름)을 사용합니다.)
 
-실행을 회피하기 전에 React에서 특정 컴포넌트를 다시 렌더링하는 것이 여전히 필요할 수도 있다는 것에 주의해야 합니다. React가 불필요하게 트리에 그 이상으로 「더 깊게」는 관여하지 않을 것이므로 크게 신경 쓰지 않아도 되지만, 렌더링 시에 고비용의 계산을 하고 있다면 [useMemo](#useMemo)를 사용하여 그것들을 최적화할 수 있습니다.
+실행을 회피하기 전에 React에서 특정 컴포넌트를 다시 렌더링하는 것이 여전히 필요할 수도 있다는 것에 주의해야 합니다. React가 불필요하게 트리에 그 이상으로 「더 깊게」는 관여하지 않을 것이므로 크게 신경 쓰지 않아도 되지만, 렌더링 시에 고비용의 계산을 하고 있다면 [useMemo](#usememo)를 사용하여 그것들을 최적화할 수 있습니다.
 
 ## useEffect는 따로 정리
 
@@ -257,7 +267,7 @@ function Counter({initialCount}) {
 ### dispatch의 갱신의 취소
 `Reducer Hook`에서 현재 state와 `같은 값을 반환`하는 경우 React는 자식을 리렌더링하거나 effect를 발생하지 않고 이것들을 `회피`할 것입니다. (React는 [Object.is](https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Object/is#Description) 비교 알고리즘을 사용합니다.)
 
-렌더링 시에 `고비용의 계산`을 하고 있다면 [useMemo](#useMemo)를 사용하여 그것들을 최적화할 수 있습니다.
+렌더링 시에 `고비용의 계산`을 하고 있다면 [useMemo](#usememo)를 사용하여 그것들을 최적화할 수 있습니다.
 
 ## useCallback
 ``` js
