@@ -31,7 +31,7 @@ useEffect(() => {
 ```
 
 정리 함수는 메모리 누수 방지를 위해 UI에서 컴포넌트를 제거하기 전에 수행됩니다.
-더불어, 컴포넌트가 (그냥 일반적으로 수행하는 것처럼) 여러 번 렌더링 된다면 `다음 effect가 수행되기 전에 이전 effect는 정리됩니다.` 그 이유는 브라우저의 렌더링을 방해하지 않게 하기 위함입니다. 위의 예에서, 매 갱신마다 새로운 구독이 생성된다고 볼 수 있습니다.[클로저 참고자료](https://simsimjae.tistory.com/400)
+더불어, 컴포넌트가 (그냥 일반적으로 수행하는 것처럼) 여러 번 렌더링 된다면 `다음 effect가 수행되기 전에 이전 effect는 정리됩니다.` 그 이유는 브라우저의 렌더링을 방해하지 않게 하기 위함입니다. 위의 예에서, 매 갱신마다 새로운 구독이 생성된다고 볼 수 있습니다.
 
 아래와 같이 동작합니다.
 - props, state 업데이트
@@ -106,4 +106,72 @@ function Counter() {
 
 여기서 또 하나, 상태는 변경되지만 의존성 배열에는 아무것도 없기 때문에 클린업 함수는 실행되지 않으며 다음 이펙트 또한 실행되지 않습니다.
 
-## useReducer로 최적화하기
+## 이펙트 안에서는 최소한의 정보만 사용해야 한다.
+위 예제처럼, 이펙트 안에서 컴포넌트의 count상태를 직접 사용하는 것이 아닌 함수형 업데이트를 통해서 사용한 것처럼 말입니다. 후자의 방식은 컴포넌트가 현재 어떤 상태를 갖고 있는지 전혀 궁금해 하지 않습니다.
+
+즉, useEffect안에서 컴포넌트 내부에 있는 값을 많이 가져다 사용할수록 렌더링 스코프에 갇힌 변수들이 많아진다는 것이고 그 말은 결국에는 `디버깅하기 힘든 이슈가 발생할 가능성이 높아진다`는 것을 의미합니다.
+
+useState를 통해 하나의 state로는 할 수 있는 일이 제한적입니다. 컴포넌트 여러 상태를 계산하고 싶을 때는 useReducer를 사용하면 됩니다.
+
+## useReducer를 활용하여 여러 상태 업데이트하기
+``` js
+function Counter() {
+    const [count, setCount] = useState(0);
+    const [step, setStep] = useState(1);
+
+    useEffect(() => {
+        const id = setInterval(() => {
+            setCount(c => c + step);
+        }, 1000);
+        return () => clearInterval(id);
+    }, [step]);
+
+    return ( 
+        <>
+            <h1>{count}</h1>
+            <input value={step} onChange={e => setStep(Number(e.target.value))} />
+        </>
+    );
+}
+```
+
+이 예제는 1씩 증가하는 것이 아니라 원하는 step값만큼 카운터를 1초마다 증가시키는 예제입니다. 
+여기서 만약 step을 바뀌주면 step이 이펙트의 의존성으로 설정되어 있기 때문에 인터벌이 초기화되고 재설정됩니다.
+
+근데 step이 바뀌더라도 인터벌을 재설정하고 싶지 않으면 어떻게 해야 할까요? useReducer를 사용하면 됩니다.
+
+``` js
+const [state, dispatch] = useReducer(reducer, initialState);
+const { count, step } = state;
+
+useEffect(() => {
+    const id = setInterval(() => {
+        dispatch({ type: 'tick' }); // setCount(c => c + step) 대신에
+    }, 1000);
+
+    return () => clearInterval(id);
+}, []);
+```
+
+1초마다 `tick`이라는 액션을 dispatch하는 코드입니다. 이펙트는 무슨 일이 일어났는지만 명시하고 직접 상태를 가져다가 사용하지 않습니다. 이렇게 하면, 이펙트가 컴포넌트 내부의 어떤 값도 사용하지 않게 만들 수 있습니다.
+
+``` js
+const initialState = {
+    count: 0, 
+    step: 1, 
+};
+
+function reducer(state, action) {
+    const { count, step } = state;
+
+    if (action.type === 'tick') {
+        return { count: count + step, step }; 
+    } else if (action.type === 'step') {
+        return { count, step: action.step };
+    } else {
+        throw new Error();
+    }
+}
+```
+
+이런 방식으로 렌더링 스코프에 갇힌 변수를 사용하지 않고 예상한대로 작동할 수 있습니다.
