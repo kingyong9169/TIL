@@ -7,6 +7,7 @@ nav_order: 4
 permalink: /react/hooks/
 ---
 # React hooks 총정리
+먼저, useEffect는 내용이 길어 따로 정리하여 업로드하는 점 미리 당부의 말씀 올립니다.
 
 ## Hook 사용 규칙
 훅을 사용할 때는 다음 규칙을 지켜야 합니다. [공식 문서](https://ko.reactjs.org/docs/hooks-rules.html#explanation)
