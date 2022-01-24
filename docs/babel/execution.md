@@ -46,6 +46,7 @@ const add = function (a, b) {
 `@babel/cli`로 거의 모든 설정값을 표현할 수 있지만, 설정할 내용이 많거나 실행 환경에 따라 설정값이 다른 경우에는 설정 파일을 따로 만드는게 좋습니다. 바벨6까지는 `.babelrc`파일로 설정값을 관리했지만, 바벨7부터는 `babel.config.js`파일로 관리하는 것을 추천합니다. 두 파일의 차이점은 뒤에서 설명합니다.
 
 > babel.config.js
+
 ``` js
 const presets = ['@babel/preset-react'];
 const plugins = [
@@ -70,6 +71,7 @@ npx babel src --out-dir dist // 폴더 단위로 처리
 `npm install webpack webpack-cli babel-loader`
 
 > webpack.config.js
+
 ``` js
 const path = require('path');
 module.exports = {
@@ -88,6 +90,7 @@ module.exports = {
 `npx webpack // 웹팩 실행`
 
 > code.bundle.js
+
 ``` js
 // ... -> 파일의 앞부분에는 웹팩의 런타임 코드가 추가됩니다.
 const element = React.createElement("div", null, "babel test");
@@ -102,6 +105,7 @@ const add = function (a, b) {
 이전에 살펴봤던 `@babel/cli`, `babel-loader`는 모두 `@babel/core`를 이용해서 바벨을 실행합니다. 이번에는 직접 `@babel/core`를 사용하는 코드를 작성해서 바벨을 실행해 봅니다.
 
 > runBabel.js
+
 ``` js
 const babel = require('@babel/cli'); // @babel/cli 모듈을 가져옵니다.
 const fs = require('fs');
@@ -144,6 +148,7 @@ const plugins = ['@babel/plugin-transform-arrow-functions'];
 AST는 코드의 구문이 분석된 결과를 담고 있는 구조체입니다. 코드가 같다면 AST도 같기 때문에 같은 코드에 대해서 하나의 AST를 만들어 놓고 재사용할 수 있습니다.
 
 > runBabel2.js
+
 ``` js
 const babel = require('@babel/cli'); // @babel/cli 모듈을 가져옵니다.
 const fs = require('fs');
