@@ -101,12 +101,12 @@ module.exports = {
         <title>웹팩 플러그인 예제</title>
     </head>
     <body>
-        <div id="root" /> // (1)
+        <div id="root" />
     </body>
 </html>
 ```
 
-1. 리액트에서 사용될 div 요소를 정의합니다.
+리액트에서 사용될 div 요소를 정의합니다.
 기타 필요한 태그를 이 파일에 추가하면 `html-webpack-plugin`이 생성하는 새로운 HTML 파일에 같이 포함됩니다.
 
 웹팩을 실행하면 dist 폴더 밑에 index.html파일이 생성됩니다.
@@ -119,12 +119,12 @@ module.exports = {
     </head>
     <body>
         <div id="root" />
-        <script type="text/javascript" src="main.8d77122044eebd82d355.js"></script> // (1)
+        <script type="text/javascript" src="main.8d77122044eebd82d355.js"></script>
     </body>
 </html>
 ```
 
-1. 번들 파일이 script 태그로 등록됩니다.
+번들 파일이 script 태그로 등록됩니다.
 
 ## DefinePlugin
 모듈 내부에 있는 문자열을 대체해 주는 `DefinePlugin`을 사용해 봅니다.
