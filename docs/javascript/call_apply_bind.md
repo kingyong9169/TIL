@@ -42,8 +42,54 @@ person2.study.call(person1); // Jo이/가 공부를 하고 있습니다.
 `func.apply(thisArg, [argsArray])`
 - thisArg: func호출에 제공되는 this의 값
 - arg1, arg2, ... : func가 호출할 인수를 지정하는 유사 배열 객체
+- 반환값: 지정한 `this` 값과 인수들로 호출한 함수의 결과
 
 첫 번째 매개변수는 `call`과 동일합니다. 하지만 두 번째 매개변수를 배열 혹은 유사 배열 객체로 넣는다는 차이점이 있습니다.
+
+### apply 와 내장함수 사용
+`apply` 를 보다 효과적으로 이용하면 일부 내장 함수는 어떤 작업에 대해서는 배열과 루프없이 쉽게 처리됩니다. 다음 예제에서는 배열에서 최대값과 최소값을 구하기 위해 `Math.max/Math.min` 함수를 이용하고 있습니다.
+``` js
+// min/max number in an array
+var numbers = [5, 6, 2, 3, 7];
+
+// using Math.min/Math.max apply
+var max = Math.max.apply(null, numbers);
+// 이는 Math.max(numbers[0], ...) 또는 Math.max(5, 6, ...)
+// 와 거의 같음
+
+var min = Math.min.apply(null, numbers);
+
+// vs. simple loop based algorithm
+max = -Infinity, min = +Infinity;
+
+for (var i = 0; i < numbers.length; i++) {
+  if (numbers[i] > max) {
+    max = numbers[i];
+  }
+  if (numbers[i] < min) {
+    min = numbers[i];
+  }
+}
+```
+하지만 이러한 방식으로 `apply` 를 사용하는 경우 주의해야 합니다. `JavaScript` 엔진의 인수 길이 제한을 초과하는 위험성에 대해 이해할 필요가 있습니다. 함수에 너무 많은(대략 몇 만개 이상) 인수를 줄 때의 상황은 엔진마다 다른데(예를 들어 `JavaScriptCore`의 경우 인수의 개수 제한은 `65536`), 상한이 특별히 정해져 있지 않기 때문입니다. 어떤 엔진은 예외를 던집니다. 더 심한 경우는 실제 함수에 인수를 전달했음에도 불구하고 참조할 수 있는 인수의 수를 제한하고 있는 경우도 있습니다(이러한 엔진에 대해 더 자세히 설명하면, 그 엔진이 `arguments`의 상한을 4개로 했다고 하면[실제 상한은 물론 더 위일 것입니다], 위 예제 코드의 전체 배열이 아니라 `5, 6, 2, 3` 만 `apply` 에 전달되어 온 것처럼 작동합니다).
+
+만약 사용하는 배열 변수의 수가 수만을 초과하는 경우에는 복합적인 전략을 강구해야할 것입니다:한 번에 전달할 배열을 분할하여 사용하기:
+``` js
+function minOfArray(arr) {
+  var min = Infinity;
+  var QUANTUM = 32768;
+
+  for (var i = 0, len = arr.length; i < len; i += QUANTUM) {
+    var submin = Math.min.apply(null,
+                                arr.slice(i, Math.min(i + QUANTUM, len)));
+    min = Math.min(submin, min);
+  }
+
+  return min;
+}
+
+var min = minOfArray([5, 6, 2, 3, 7]);
+```
 
 ## Function.prototype.bind()
 `func.bind(thisArg[, arg1[, arg2[, ...]]])`
