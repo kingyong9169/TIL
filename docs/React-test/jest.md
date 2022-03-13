@@ -1,7 +1,7 @@
 ---
 layout: default
 title: jest
-parent: React-test
+parent: React test
 nav_order: 2
 permalink: /react_test/jest
 ---

@@ -1,7 +1,7 @@
 ---
 layout: default
 title: 테스팅 시작하기
-parent: React-test
+parent: React test
 nav_order: 1
 permalink: /react_test/start
 ---
