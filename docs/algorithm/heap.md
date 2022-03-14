@@ -2,7 +2,7 @@
 layout: default
 title: 힙
 parent: 알고리즘
-nav_order: 8
+nav_order: 2
 permalink: /algorithm/heap
 ---
 
