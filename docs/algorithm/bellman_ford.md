@@ -15,7 +15,7 @@ permalink: /algorithm/bellman_ford
 
 밸만-포드 알고리즘은 s와 u사이의 최단 거리를 구할 때, 그래프 내 모든 edge에 대해서 `edge relaxation` 을 수행해준다.
 
-밸만-포드 알고리즘에서는 모든 엣지에 대한 edge relaxation을 `|V| - 1`회 수행한다.
+밸만-포드 알고리즘에서는 모든 엣지에 대한 edge relaxation을 `|V| - 1`회 수행한다. 한 정점에서 출발한 다른 정점까지의 최단경로는 많아봐야 `V - 1`개의 간선을 가지기 때문이다. 따라서 모든 정점에 대해 `V - 1`번의 반복을 통해 가능한 모든 경로를 탐색하여 정확한 답을 내도록 한다.
 
 ## edge relaxation 이란?
 <img src="https://i.imgur.com/nqdnANR.png">
@@ -59,3 +59,6 @@ function bellmanFord(n, m, graph, node, start) {
     return distance;
 }
 ```
+
+## 다익스트라와 차이점
+벨만 포드 알고리즘은 매 반복마다 모든 간선을 확인한다. 반면 다익스트라 알고리즘은 방문하지 않는 노드들 중에서 최단 거리가 가장 가까운 노드만을 방문한다.
