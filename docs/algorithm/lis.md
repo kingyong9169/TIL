@@ -13,13 +13,13 @@ permalink: /algorithm/lis
 
 일반적으로 간편한 방법은 DP을 이용하는 것입니다.
 ``` js
-for(let k = 0 ; k < n ; k++) {
-	length[k] = 1;
-    for(let i = 0 ; i < k ; i++) {
-        if(arr[i] < arr[k]) {
-            length[k] = Math.max(length[k], length[i] + 1);
-        }
+for(let k = 1 ; k < n ; k++) {
+  length[k] = 1;
+  for(let i = 0 ; i < k ; i++) {
+    if(arr[i] < arr[k]) {
+      length[k] = Math.max(length[k], length[i] + 1);
     }
+  }
 }
 ```
 
@@ -51,6 +51,19 @@ LIS의 핵심 아이디어는 LIS의 마지막 원소가 가능한 작을수록 
 실제로 마지막 원소 6이 들어올 때에는 `[1, 2, 3, 7]`로는 생성할 수 없고, `[1, 2, 3, 5]`에 붙어 `[1, 2, 3, 5, 6]`을 만들 수 있습니다.
 
 하지만 이 알고리즘을 이용하면 길이만 구할 수 있습니다.
+``` js
+const origin = [3, 5, 2, 6, 1]
+const arr = [];
+let idx = 0;
+for(let i = 0 ; i < n ; i++) {
+  if(!idx) arr[idx++] = origin[i];
+  else {
+    if(arr[idx - 1] < origin[i]) arr[idx++] = origin[i];
+    else arr[lower_bound(0, idx - 1, origin[i])] = origin[i];
+    // arr배열에서 origin[i]보다 최초로 같거나 큰 위치를 찾는다.
+  }
+}
+```
 
 `[3, 5, 2, 6, 1]` 배열은 다음과 같이 진행됩니다. 
 
@@ -62,7 +75,7 @@ LIS의 핵심 아이디어는 LIS의 마지막 원소가 가능한 작을수록 
 
 실제로 LIS는 `[3, 5, 6]`이지만 `[1, 5, 6]`이 만들어집니다.
 이러한 원리로 LIS의 길이는 구할 수 있지만, 실제 LIS의 수열을 구하기 위해서는 추가적인 작업이 필요합니다.
-주어진 수열의 각각의 원소들이 K 배열에 들어가는 index를 배열로 별도로 저장합니다. 
+주어진 수열의 각각의 원소들이 K 배열에 들어가는 index를 배열로 별도로 저장합니다.
 그리고 나서 마지막원소부터 LIS의 길이를 감소시켜 가면서, 처음으로 해당 길이의 index가 나오는 원소만 뽑아냅니다. 
 
 [3, 5, 2, 6, 1] 배열을 예로 들면, 
@@ -74,7 +87,43 @@ LIS의 핵심 아이디어는 LIS의 마지막 원소가 가능한 작을수록 
 5. [1, 5, 6]
 
 이므로 3은 1번째, 5는 2번째, 2는 1번째, 6은 3번째, 1은 1번째 index에 들어가게 됩니다.
-즉, index 배열은 [1, 2, 1, 3, 1]이 되는 것입니다.
+즉, index 배열은 [0, 1, 0, 2, 0]이 되는 것입니다.
 
-LIS의 길이는 현재 3이므로 index 배열의 뒤에서부터 처음으로 3이 나오는 원소는 6이며, 그 다음 처음으로 2가 나오는 원소는 5, 그 다음 처음으로 1이 나오는 원소는 3이 된다.
+LIS의 길이는 현재 3이므로 index 배열의 뒤에서부터 처음으로 2(index) + 1이 나오는 원소는 6이며, 그 다음 처음으로 1(index) + 1가 나오는 원소는 5, 그 다음 처음으로 0(index) + 1이 나오는 원소는 3이 된다.
 따라서 이를 역으로 정렬하면 [3, 5, 6] 으로 우리가 구하고자 하는 LIS가 나오게 됩니다.
+
+``` js
+const origin = [3, 5, 2, 6, 1]
+const arr = [];
+const indexArr = [];
+const ans = [];
+const n = 5;
+let idx = 0;
+
+for(let i = 0 ; i < n ; i++) {
+  if(!idx) {
+    arr[idx++] = origin[i];
+    indexArr[i] = 0; // 최초 위치
+  }
+  else {
+    if(arr[idx - 1] < origin[i]) {
+      indexArr[i] = idx;
+      arr[idx++] = origin[i];
+    }
+    else {
+      indexArr[i] = lower_bound(0, idx - 1, origin[i]);
+      arr[lower_bound(0, idx - 1, origin[i])] = origin[i];
+      // arr배열에서 origin[i]보다 최초로 같거나 큰 위치를 찾는다.
+    }
+  }
+}
+
+let t = 0;
+for(let i = n - 1 ; i >= 0 ; i--) {
+  if(idx === index[i] + 1) {
+    ans[t++] = origin[i];
+    idx--;
+  }
+}
+console.log(ans.reverse());
+```
