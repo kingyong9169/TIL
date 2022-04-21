@@ -11,6 +11,8 @@ permalink: /esc/lazy_loading
 기본적으로 이미지를 지연 로딩하기 위해서는 스크롤을 이용하여 이미지가 있는 곳까지 스크롤이 왔는지 판단하여 처리한다.<br>
 but 단점이 있는데 스크롤할 때마다 함수를 호출한다. 오히려 성능 저하가 생길 수 있다. 하지만 이를 `Intersection Observer`로 해결할 수 있다.
 
+참고로 `Intersection Observer`에 등록한 `callback`은 지정한 엘리먼트가 화면에서 보이는 순간, 나가는 순간, 생성된 순간 이렇게 총 3번 호출된다. 따라서 사용하고 `unobserve`할 필요성이 있다.
+
 ``` js
 useEffect(() => {
   const option = {};

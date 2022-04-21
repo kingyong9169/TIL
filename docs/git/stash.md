@@ -23,7 +23,7 @@ permalink: /git/stash
 이제 새로운 작업을 위한 다른 브랜치로 변경할 수 있다.
 
 #### untracked file 숨기기 [참조 링크](https://linuxhint.com/stash-untracked-files-in-git/)
-1. `git stash -include-untracked`
+1. `git stash --include-untracked`
 2. `git stash -u`
 3. `git add 후 git stash`
 
