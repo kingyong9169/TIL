@@ -2,7 +2,7 @@
 layout: default
 title: Next.js란?
 parent: Next.js
-nav_order: 1
+nav_order: 2
 permalink: /next/overview
 ---
 
