@@ -57,3 +57,34 @@ permalink: /next/data_fetching
 
 ## 어디서 getStaticPaths를 사용할 수 있을까?
 `getStaticPaths`는 `getStaticProps`도 사용하는 동적 경로에서만 내보낼 수 있다. `components`와 같이 페이지가 아닌 파일에서는 내보낼 수 없다.
+
+# getStaticProps
+페이지에서 `getStaticProps`(SSG)라는 함수를 내보내는 경우 Next.js는 `getStaticProps`에 의해 반환되는 `props`를 사용하여 빌드 시간에 페이지를 `pre-render`합니다.
+
+## getStaticProps를 언제 사용하나요?
+- 페이지를 렌더링하기 위해 필요한 데이터가 유저의 요청에 앞서 빌드 시 사용할 수 있다.
+- 데이터는 헤드리스 CMS에서 가져온다.
+- 데이터를 공개적으로 캐시할 수 있다.
+- 페이지가 pre-rendering되어야 하고 매우 빨라야 하는 경우 - `getStaticProps`는 `HTML`와 `json`파일을 생성한다. 성능을 위해 둘 다 CDN에 의해 캐시될 수 있다.
+
+## getStaticProps는 언제 실행될까?
+`getStaticProps`는 항상 서버에서 실행되고 클라이언트에서는 실행되지 않습니다.
+- `getStaticProps`는 `next build`동안 항상 실행한다.
+- `getStaticProps`는 `revalidate`를 사용할 때 백그라운드에서 실행된다.
+- `getStaticProps`는 [unstable_revalidate](https://nextjs.org/docs/basic-features/data-fetching/incremental-static-regeneration#on-demand-revalidation-beta)를 사용할 때 백그라운드에서 수요에 맞게 실행된다.
+
+증분적 정적 재생성과 함께 결합하면, `getStaticProps`는 오래된 페이지가 재검증되는 동안 백그라운드에서 실행되고 새 페이지가 브라우저가 제공된다.
+
+`getStaticProps`는 정적 HTML을 생성하므로 들아오는 요청(예: 쿼리 매개변수 또는 http 헤더)에 액세스할 수 없습니다. 만약 페이지의 요청에 액세스가 필요하다면 `getStaticProps`에 추가적으로 미들웨어를 사용하는 것을 고려하면 된다.
+
+## 직접적으로 서버 사이드 코드 쓰기
+``getStaticProps``는 서버 측에서만 실행되므로 클라이언트 측에서는 절대 실행되지 않는다. 브라우저용 JS번들에도 포함되지 않으므로 브라우저로 보내지 않고 직접 DB 쿼리를 작성할 수 있다.
+
+이것은 `getStaticProps`로부터 API 라우트를 가져오는 것 대신에 `getStaticProps`에서 직접적으로 서버 사이드 코드를 작성할 수 있습니다.
+
+API 라우트는 CMS로부터 데이터를 가져오는데 사용된다. API 라우트는 `getStaticProps`로부터 직접적으로 호출됩니다. 이것은 추가적인 요청을 발생시켜 성능이 저하된다. 대신,`lib/`디렉토리를 사용하여 CMS에서 데이터를 가져오는 로직을 공유할 수 있다. 그런 다음 `getStaticProps`와 함께 공유할 수 있다.
+
+## HTML과 JSON을 모두 정적으로 생성
+`getStaticProps`가 포함된 페이지가 빌드 시 미리 렌더링되면 페이지 HTML 파일 외에 Next.js가 `getStaticProps` 실행 결과를 담은 JSON파일을 생성합니다.
+
+JSON 파일은 `next/link` or `next/router`를 통한 클라이언트 사이드 라우팅에 사용된다. `getStaticProps`를 사용하여 미리 렌더링된 페이지로 이동하면 Next.js는 JSON파일을 가져와 페이지 컴포넌트에 대한 props로 사용한다. 즉, 내보낸 JSON만 사용되므로 클라이언트 측 페이지 전환이 `getStaticProps`을 호출되지 않는다.
