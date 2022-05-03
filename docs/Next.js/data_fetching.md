@@ -88,3 +88,23 @@ API 라우트는 CMS로부터 데이터를 가져오는데 사용된다. API 라
 `getStaticProps`가 포함된 페이지가 빌드 시 미리 렌더링되면 페이지 HTML 파일 외에 Next.js가 `getStaticProps` 실행 결과를 담은 JSON파일을 생성합니다.
 
 JSON 파일은 `next/link` or `next/router`를 통한 클라이언트 사이드 라우팅에 사용된다. `getStaticProps`를 사용하여 미리 렌더링된 페이지로 이동하면 Next.js는 JSON파일을 가져와 페이지 컴포넌트에 대한 props로 사용한다. 즉, 내보낸 JSON만 사용되므로 클라이언트 측 페이지 전환이 `getStaticProps`을 호출되지 않는다.
+
+# 질문사항
+MPA + SPA
+hydrate 과정
+fallback
+
+json을 저장하는 이유: json파일만 가져와서 JS에 넣어서 렌더링한다.
+
+on-demand revalidation은 캐시를 지운다.
+
+매번 요청이 올 때마다 SSR하면 SEO가 어떻게 오냐? 항상 Search 엔진이 항상 HTML을 받는다. 완성된 HTML을 줘버리니까 SEO가 된다.
+
+ISR
+res를 제대로 못 받아 왔을 시, 이전 렌더링을 그대로 사용
+
+기본으로 `_app.js`이다. 
+
+styled-jsx 쓰는 이유
+
+귀찮게 해라. 제안을 하는 방안. 과제 완성도를 준다. 좋은 인상을 준다.
