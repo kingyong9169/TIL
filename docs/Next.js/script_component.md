@@ -200,9 +200,9 @@ export default function Home() {
       <Script
         id="stripe-js"
         src="https://js.stripe.com/v3/"
-        onLoad={() => {%
+        onLoad={() => {
           setStripe({ stripe: window.Stripe('pk_test_12345') })
-        %}}
+        }
       />
     </>
   )
