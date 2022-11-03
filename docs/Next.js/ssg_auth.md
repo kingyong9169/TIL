@@ -30,6 +30,7 @@ permalink: /next/ssg_auth
 그리하여 아래 해결 방안 링크를 따라가보면 다음과 같은 내용이 나옵니다.
 
 1. useEffect 사용하는 방법
+
 ``` tsx
 function MyComponent() {
   useEffect(() => {
@@ -40,6 +41,7 @@ function MyComponent() {
 하지만 요구사항을 충족할 수 없습니다.
 
 2. 해당 컴포넌트를 lazy하게 로드하는 방법
+
 ``` tsx
 function Parent() {
   const [showChild, setShowChild] = useState(false);
@@ -62,9 +64,11 @@ function Child(props) {
   });
 }
 ```
+
 이 방법이면 요구사항을 충족할 수 있습니다.
 
 3. [useIsomorphicLayoutEffect](https://usehooks-ts.com/react-hook/use-isomorphic-layout-effect)훅을 만들어 사용하는 방법
+
 ``` tsx
 import { useEffect, useLayoutEffect } from 'react';
 
@@ -72,6 +76,7 @@ const useIsomorphicLayoutEffect = typeof window !== 'undefined' ? useLayoutEffec
 
 export default useIsomorphicLayoutEffect;
 ```
+
 서버일 경우 `useLayoutEffect`를 ``useEffect로` 변경하는 방법입니다. 현재 굳이 사용할 필요가 없어 보입니다.
 
 그리하여 2번 방법을 사용하기로 결정했습니다.
