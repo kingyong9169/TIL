@@ -1,8 +1,9 @@
 ---
-layout: default
+layout: page
 title: 폰트 최적화
+parent: 웹 성능 최적화
 nav_order: 2
-has_children: true
+has_children: false
 permalink: /optimization/font
 ---
 
