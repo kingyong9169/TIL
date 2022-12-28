@@ -18,6 +18,7 @@ permalink: /react_test/msw
 
 ## 세팅하기
 1. MSW를 설치
+
 ```bash
 npm install msw --save-dev
 ```
@@ -101,6 +102,7 @@ if (process.env.NODE_ENV === "development") {
 노드 환경에서는 listen, start, close 순으로 실제 서버가 동작하는 것처럼 mocking하는 것이다.
 
 1. 서버 생성
+
 ``` js
 // src/mocks/browser.js
 import { setupServer } from "msw/node";
@@ -111,6 +113,7 @@ export const server = setupServer(...handlers)
 ```
 
 2. API mocking 설정
+
 ```js
 // src/setupTests.js
 import "@testing-library/jest-dom";
@@ -127,6 +130,7 @@ afterAll(() => server.close());
 ### 브라우저, 노드 환경에서 MSW 실행하기
 노드 환경일 때는 server, 브라우저 환경일 때는 worker를 실행시킨다.
 1. `src/mocks/initMockApi.js` 파일 생성
+
 ```js
 // src/mocks/initMockApi.js
 const initMockApi = async () => {
@@ -143,6 +147,7 @@ export default initMockApi;
 ```
 
 2. `src/pages/_app.js` 파일 수정
+
 ```js
 // src/pages/_app.js
 import initMockApi from "../mocks/initMockApi";
@@ -165,6 +170,7 @@ if (process.env.NODE_ENV === "development") {
 ## 사용예시 - jest
 
 ### api mocking하기
+
 ```js
 test("fetch option information from server", async () => {
   render(<Type orderType="options" />);
@@ -177,6 +183,7 @@ test("fetch option information from server", async () => {
 위 `Type` 컴포넌트 내부에서는 `"http://localhost:5000/options"`에 대한 `Get`요청을 하고 있다. MSW를 사용했기 때문에 mocking하여 결과를 테스트할 수 있게 되는 것이다.
 
 ### api mocking하기 - 에러 발생
+
 ```js
 test("when fetching product datas, face an error", async () => {
   server.resetHandlers(
