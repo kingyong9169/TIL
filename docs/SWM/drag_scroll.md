@@ -1,3 +1,12 @@
+---
+layout: default
+title: 마우스, 터치 좌우 드래그 스크롤 만들기
+parent: SW Maestro
+has-children: false
+nav_order: 19
+permalink: /swm/drag_scroll/
+---
+
 # 마우스, 터치 좌우 드래그 스크롤 만들기
 요즘 웹사이트에서는 가로 스크롤을 직접 움직이는 대신 어플리케이션처럼 마우스로 컨텐츠를 움직이는 좌우 드래그 스크롤 기능을 제공하는 사이트들이 많다. 따라서 이 기능을 구현해 보았다.
 
