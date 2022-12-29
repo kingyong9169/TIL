@@ -4,7 +4,7 @@ title: 성능 최적화 시작하기
 parent: 웹 성능 최적화
 nav_order: 1
 has_children: false
-permalink: /optimization/img_sprite
+permalink: /optimization/start
 ---
 
 # 성능 최적화 시작하기
