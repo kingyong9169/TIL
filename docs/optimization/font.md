@@ -2,7 +2,7 @@
 layout: page
 title: 폰트 최적화
 parent: 웹 성능 최적화
-nav_order: 2
+nav_order: 3
 has_children: false
 permalink: /optimization/font
 ---

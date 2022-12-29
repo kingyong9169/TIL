@@ -2,7 +2,7 @@
 layout: page
 title: 이미지 스프라이트
 parent: 웹 성능 최적화
-nav_order: 1
+nav_order: 2
 has_children: false
 permalink: /optimization/img_sprite
 ---
