@@ -50,9 +50,6 @@ file로 데이터를 저장해두고 그 file을 읽어서 캐시 데이터를 �
 
 이때, 하나의 캐시 엔트리가 여러 개의 `http` 응답들로 구성되어 있을 수도 있다. 이 경우 해당 `http` 응답들은 그 캐시 엔트리 내에서 두 번재(`Secondary`) 키에 의해 구분된다. 보통 그 캐시 엔트리에 대응하는 `http` 요청이 `컨텐츠 협상`(`Content Negotiation`)의 타겟인 경우에 해당한다. 좀 더 자세한 내용은 [vary헤더](https://developer.mozilla.org/ko/docs/Web/HTTP/Headers/Vary)에 대해 읽어보자.
 
-## 참고자료
-[http 캐싱(mdn)](https://developer.mozilla.org/ko/docs/Web/HTTP/Caching)
-
 # 3. Cache-Control 헤더
 
 `HTTP/1.1`의 `Cache-Control` 헤더에는 `HTTP` 요청/응답에서의 캐싱 메커니즘을 결정하는 여러 디렉티브(`Directive`)들을 나열할 수 있다. 각각의 디렉티브는 캐싱을 어떻게 할 것인지와 관련된 일종의 옵션이라고 보면 된다. 이때 `Cache-Control` 헤더는 **`HTTP` 요청 헤더와 `HTTP` 응답 헤더**에 **모두 사용할 수 있지만**, 각각에 나열하는 디렉티브들은 **서로 다른 의미**를 지니며 **나열할 수 있는 디렉티브들의 종류도 조금씩 다르다.**
@@ -124,7 +121,7 @@ file로 데이터를 저장해두고 그 file을 읽어서 캐시 데이터를 �
 <img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FQMfXl%2Fbtq4yhkeqTY%2Fnp5XdadwRE5mS1wRFtk26K%2Fimg.png" width="700" />
 
 ## ETags
-ETag 응답 헤더는 강함 검증으로써 사용될 수 있는 `User-Agent`에게 있어 불투명한 값이다. 브라우저와 같은 http 사용자 에이전트가 이 문자열이 무엇을 표현하는지 알 수 없고, 그것의 값이 무엇이 될지를 예측할 수 없다는 것을 의미한다. `ETag`헤더가 리소스에 대한 응답의 일부라면, 클라이언트는 이후 요청의 헤더 내에 `If-None-Match`헤더를 포함시켜서 서버에게 검증 요청을 보낼 수 있다. `304 Not Modified` 응답은 `304 Not Modified` 상태 코드와 함께 `ETag`헤더를 포함시킨다. 이때 `ETag`헤더의 값은 `If-None-Match`헤더의 값과 같다. 이러한 과정을 통해 서버는 클라이언트에게 리소스가 변경되지 않았음을 알려준다.(리소스 자체를 보내지 않고)
+ETag 응답 헤더는 강함 검증으로써 사용될 수 있는 `User-Agent`에게 있어 불투명한 값이다. 브라우저와 같은 http 사용자 에이전트가 이 문자열이 무엇을 표현하는지 알 수 없고, 그것의 값이 무엇이 될지를 예측할 수 없다는 것을 의미한다. `ETag`헤더가 리소스에 대한 응답의 일부라면, 클라이언트는 이후 요청의 헤더 내에 `If-None-Match`헤더를 포함시켜서 서버에게 검증 요청을 보낼 수 있다. `304 Not Modified` 응답은 `304 Not Modified` 상태 코드와 함께 `ETag`헤더를 포함시킨다. 이때 `ETag`헤더의 값은 `If-None-Match`헤더의 값과 같다. 이러한 과정을 통해 서버는 클라이언트에게 리소스가 변경되지 않았음을 알려준다.(리소스 자체를 보내지 않고)http://www.snowtown.com/login
 
 ## Last-Modified
 `Last-Modified` 응답 헤더는 약한 검증으로써 사용될 수 있다. 그것이 1초의 해상도만 가질 수 있기에 약하다고 간주된다. `Last-Modified` 헤더가 응답 내에 존재하면, 클라이언트는 캐시된 문서를 검증하기 위해 `If-Modified-Since` 요청 헤더를 줄 수 있다.
